@@ -35,20 +35,33 @@ def fetch_and_store_news():
         
         time.sleep(3600)  # Wait 1 hour before fetching again
 
+def paginate_data(data, page, page_size):
+    if "articles" in data:
+        if page == "all":
+            return data["articles"]
+        
+        page = int(page)
+        page_size = int(page_size)
+        start = (page - 1) * page_size
+        end = start + page_size
+        return data["articles"][start:end]
+    return []
+
 @app.route("/headlines", methods=["GET"])
 def get_headlines():
-    if headlines_data:
-        return jsonify(headlines_data)
+    if headlines_data and "articles" in headlines_data:
+        page = request.args.get("page", default=1)
+        page_size = request.args.get("pageSize", default=5)
+        paginated_articles = paginate_data(headlines_data, page, page_size)
+        return jsonify({"articles": paginated_articles})
     return jsonify({"error": "No data available"}), 404
 
 @app.route("/everything", methods=["GET"])
 def get_everything():
     if everything_data and "articles" in everything_data:
-        page = request.args.get("page", default=1, type=int)
-        page_size = request.args.get("pageSize", default=5, type=int)
-        start = (page - 1) * page_size
-        end = start + page_size
-        paginated_articles = everything_data["articles"][start:end]
+        page = request.args.get("page", default=1)
+        page_size = request.args.get("pageSize", default=5)
+        paginated_articles = paginate_data(everything_data, page, page_size)
         return jsonify({"articles": paginated_articles})
     return jsonify({"error": "No data available"}), 404
 
