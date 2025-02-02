@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all origins
 
 HEADLINES_URL = "https://newsapi.org/v2/top-headlines?category=technology&apiKey=ac8ae18ab3424ef183a04ddc865c980d"
-EVERYTHING_URL = "https://newsapi.org/v2/everything?q=technology&apiKey=ac8ae18ab3424ef183a04ddc865c980d"
+EVERYTHING_URL = "https://newsapi.org/v2/everything?q=technology&sortBy=publishedAt&apiKey=ac8ae18ab3424ef183a04ddc865c980d"
 
 headers = {"User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"}
 
